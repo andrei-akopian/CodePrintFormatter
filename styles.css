@@ -1,0 +1,30 @@
+.settings {
+    background-color: #0000FF;
+    color: #FFFFFF;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.file-display {
+    margin-left: 10px;
+}
+
+.datetime {
+    font-size: 12px;
+    float: right;
+    padding-right: 20px;
+}
+
+.author {
+    margin: 10px;
+}
+
+.page-title {
+    font-size: large;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
