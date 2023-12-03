@@ -10,10 +10,12 @@
             <button onclick="setTitle()">Set Title</button>
             <button onclick="setAuthor()">Set Author</button>
             <button onclick="resetFiles()">Reset Files</button>
-            <input type="number" id="tab-size" min="1" max="5" value="1"/> Tab Size
+            <input type="number" id="tab-size" min="0" max="5" value="1"/> Tab Size
+            <input type="number" id="front-crop" min="0" value="0"/> Front Crop
+            <input type="number" id="back-crop" min="0" value="0"/> Back Crop
         </div>
     </head>
-    <body id="main-body" style="font-family:monospace">
+    <body id="main-body">
         <p id="page-title" class="page-title"></p>
         <p id="datetime" class="datetime"></p>
         <p id="author" class="author"></p>

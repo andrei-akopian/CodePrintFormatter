@@ -7,6 +7,8 @@ const fileDisplay = document.getElementById("file-display");
 const fileInput = document.getElementById("file-input");
 const settings = document.getElementById("settings");
 const tabSize = document.getElementById("tab-size");
+const frontCrop = document.getElementById("front-crop");
+const backCrop = document.getElementById("back-crop");
 
 fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -47,7 +49,7 @@ function setTitle() {
 function setDate() {
     var date = prompt("Enter date for your document (leave blank for default/reset):");
     if (date === "") {
-        date = Date();
+        date = Date(); //add more options to here
     }
     datetime.innerHTML = date;
 }
@@ -57,8 +59,9 @@ function formatfile(file, fileContent) {
     var mod = fileContent.split("\n");
     var output = "<strong>" + file.name + "</strong>";
     var line_n_len = Math.floor(Math.log10(mod.length));
-    for (var i = 1; i <= mod.length; i++) {
-        output += "<br>" + "&nbsp;".repeat(line_n_len + 1 - i.toString().length) + i + "|    " + replace_leading_whitespaces_simple(replace_reserved(mod[i - 1]));
+    for (var i = frontCrop.value; i < mod.length - backCrop.value; i++) {
+        let line_number = i - frontCrop.value + 1;
+        output += "<br>" + "&nbsp;".repeat(line_n_len + 1 - line_number.toString().length) + line_number + "|    " + replace_leading_whitespaces_simple(replace_reserved(mod[i]));
     }
     return output + "<br><br>"; //TODO: adjustable breaks between spaces.
 }
@@ -69,7 +72,7 @@ function resetFiles() {
 }
 
 function replace_reserved(string) {
-    return string.replace("<", "&lt;").replace(">", "&gt;");
+    return string.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function replace_leading_whitespaces_simple(string) {

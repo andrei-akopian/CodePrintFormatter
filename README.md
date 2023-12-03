@@ -2,5 +2,5 @@
 - [ ] custom fonts
 - [ ] better date choices
 - [ ] document ordering/deletion
-- [ ] document cropping
+- [x] document cropping
 - [ ] pagebreaks
