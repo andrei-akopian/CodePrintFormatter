@@ -1,4 +1,4 @@
-var output = "";
+let fileCount = 0;
 
 const Title = document.getElementById("page-title");
 const Author = document.getElementById("author");
@@ -9,6 +9,11 @@ const settings = document.getElementById("settings");
 const tabSize = document.getElementById("tab-size");
 const frontCrop = document.getElementById("front-crop");
 const backCrop = document.getElementById("back-crop");
+const fontSize = document.getElementById("font-size");
+
+fontSize.addEventListener("change", (e) => {
+    fileDisplay.style.fontSize = fontSize.value + "px";
+});
 
 fileInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -16,16 +21,21 @@ fileInput.addEventListener("change", (e) => {
     fileInput.value = "";
 });
 
+function addFileToDisplay(fileContent) {
+    let fileDisplayNode = document.createElement("div");
+    fileDisplayNode.id = "file-display-" + fileCount;
+    fileDisplayNode.innerHTML = fileContent;
+    fileDisplay.appendChild(fileDisplayNode);
+    fileCount += 1;
+}
 
 function processFile(file) {
-
     if (file) {
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e) => {
             const fileContent = e.target.result;
-            output += formatfile(file, fileContent);
-            fileDisplay.innerHTML = output;
+            addFileToDisplay(formatfile(file, fileContent));
         };
     }
 }
@@ -49,11 +59,10 @@ function setTitle() {
 function setDate() {
     var date = prompt("Enter date for your document (leave blank for default/reset):");
     if (date === "") {
-        date = Date(); //add more options to here
+        date = Date(); //TODO: add more options to here
     }
     datetime.innerHTML = date;
 }
-
 
 function formatfile(file, fileContent) {
     var mod = fileContent.split("\n");
@@ -69,6 +78,13 @@ function formatfile(file, fileContent) {
 function resetFiles() {
     output = "";
     fileDisplay.innerHTML = "";
+}
+
+function removeLastFile() {
+    if (fileCount > 0) {
+        fileCount -= 1;
+        document.getElementById("file-display-" + fileCount).remove();
+    }
 }
 
 function replace_reserved(string) {
