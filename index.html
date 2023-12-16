@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>Code Print</title>   
+    </head>
+    <body id="main-body">
         <div id="settings" class="settings">
             <button onclick="printFileOutput()">Print</button>
             <input type="file" id="file-input" accept=".java, .py, .js, .c, .md" style="display: none;">
@@ -10,18 +12,18 @@
             <button onclick="setTitle()">Set Title</button>
             <button onclick="setAuthor()">Set Author</button>
             <button onclick="resetFiles()">Reset Files</button>
-            <button onclick="removeLastFile()">Remove Last File</button>
             <input type="number" id="tab-size" min="0" max="5" value="1"/> Tab Size
             <input type="number" id="front-crop" min="0" value="0"/> Front Crop
             <input type="number" id="back-crop" min="0" value="0"/> Back Crop
             <input type="number" id="font-size" min="1" max="200" value="13"/> Font Size
         </div>
-    </head>
-    <body id="main-body">
-        <p id="page-title" class="page-title"></p>
-        <p id="datetime" class="datetime"></p>
-        <p id="author" class="author"></p>
-        <div id="file-display" class="file-display"></div>
+        <div id="file-display">
+            <div class="file-display-header">
+                <div id="author" class="author"></div>
+                <div id="page-title" class="page-title"></div>
+                <div id="datetime" class="datetime"></div>
+            </div>
+        </div>
     </body>
     <div>
         <script src="index.js"></script>

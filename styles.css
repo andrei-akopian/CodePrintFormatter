@@ -1,6 +1,18 @@
 .settings {
     background-color: #0000FF;
     color: #FFFFFF;
+    height: max-content;
+    border-style: solid;
+    border-width: 5px;
+    border-color: blue;
+}
+
+.format-sidebar {
+    background-color: #0000FF;
+    color: #FFFFFF;
+    float: right;
+    height: inherit;
+    width: 100px;
 }
 
 body {
@@ -9,23 +21,39 @@ body {
     font-family: monospace;
 }
 
+.file-div {
+    justify-content: space-between;
+    display: flex;
+}
+
 .file-display {
     margin-left: 10px;
+    margin-right: 10px;
+}
+
+.file-display-header {
+    position: relative;
+    min-height: 30px;
 }
 
 .datetime {
-    font-size: 12px;
-    float: right;
-    padding-right: 20px;
+    margin-top: 3px;
+    margin-right: 5px;
+    position: absolute;
+    right: 10px;
+    font-size: small;
 }
 
 .author {
+    position: absolute;
+    left: 10px;
     margin: 10px;
 }
 
 .page-title {
+    margin-top: 14px;
     font-size: large;
     position: absolute;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
 }
