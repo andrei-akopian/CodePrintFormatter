@@ -8,11 +8,14 @@
 }
 
 .format-sidebar {
-    background-color: #0000FF;
+    background-color: blue;
     color: #FFFFFF;
     float: right;
     height: inherit;
     width: 100px;
+    border-top-width: 5px;
+    border-top-style: solid;
+    border-color: #007;
 }
 
 body {
@@ -56,4 +59,12 @@ body {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+.crop-input {
+    width: 90px;
+}
+
+p {
+    margin: 0px;
 }

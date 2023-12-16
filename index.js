@@ -7,43 +7,13 @@ const fileDisplay = document.getElementById("file-display");
 const fileInput = document.getElementById("file-input");
 const settings = document.getElementById("settings");
 const tabSize = document.getElementById("tab-size");
-const frontCrop = document.getElementById("front-crop");
-const backCrop = document.getElementById("back-crop");
 const fontSize = document.getElementById("font-size");
 
 added_files = []
 
-//File Nodes generators
-function generateFileDivNode(file_id) {
-    let file_div_node = document.createElement("div");
-    file_div_node.id = "file-div-" + file_id;
-    file_div_node.className = "file-div";
-    return file_div_node;
-}
-
-function generateFileDisplayNode() {
-    let file_display_node = document.createElement("div");
-    file_display_node.className = "file-display";
-    return file_display_node;
-}
-
-function generateFormatSidebarNode(file_id) {
-    let format_sidebar_node = document.createElement("div");
-    format_sidebar_node.className = "format-sidebar";
-    format_sidebar_node.textContent = "Hello, " + file_id;
-    // remove button
-    let removeButton = document.createElement("button");
-    let fi = file_id;
-    removeButton.onclick = () => (removeFile(fi));
-    removeButton.innerHTML = "Remove File";
-    format_sidebar_node.appendChild(removeButton);
-    return format_sidebar_node;
-}
-
-
 class addedFile {
     reender() {
-        this.file_display_node.innerHTML = formatfile(this.file_name, this.content);
+        this.file_display_node.innerHTML = formatfile(this.file_name, this.content, this.front_crop.value, this.back_crop.value);
     }
     hide_sidebar() {
         this.file_sidebar_node.style.display = "none"
@@ -55,9 +25,7 @@ class addedFile {
         this.file = file;
         this.file_id = file_id;
         this.file_name = file.name;
-        this.front_crop = frontCrop.value;
-        this.back_crop = backCrop.value;
-        this.content = read_file.target.result;
+        this.content = read_file.target.result; //TODO: create a better format for the content.
         this.file_div_node;
         this.file_display_node;
         this.file_sidebar_node;
@@ -69,8 +37,16 @@ class addedFile {
         this.file_display_node = generateFileDisplayNode();
         this.file_div_node.appendChild(this.file_display_node);
         // sidebar node
-        this.file_sidebar_node = generateFormatSidebarNode(file_id);
+        this.file_sidebar_node = generateFormatSidebarNode(this.file_id, this.file_name);
         this.file_div_node.appendChild(this.file_sidebar_node);
+        // sidebar components
+        this.file_sidebar_node.appendChild(generateRefreshButton(this)); //FIXME: onclick doesn't work
+        this.front_crop = generateCropInputField("front-crop-" + this.file_id, 0, 200, 0); //TODO: add input validation
+        this.back_crop = generateCropInputField("back-crop-" + this.file_id, 0, 200, 0);
+        this.file_sidebar_node.appendChild(generatePharagraph("Front Crop:"));
+        this.file_sidebar_node.appendChild(this.front_crop);
+        this.file_sidebar_node.appendChild(generatePharagraph("Back Crop:"));
+        this.file_sidebar_node.appendChild(this.back_crop);
         // display text
         this.reender();
         fileID += 1;
@@ -129,11 +105,6 @@ function setDate() {
     datetime.innerHTML = date;
 }
 
-function resetFiles() {
-    output = "";
-    fileDisplay.innerHTML = "";
-}
-
 function removeFile(fileN) {
     var file = document.getElementById("file-div-" + fileN);
     if (file != null) {
@@ -142,15 +113,15 @@ function removeFile(fileN) {
 }
 
 // text formatting function
-function formatfile(file_name, content) {
+function formatfile(file_name, content, front_crop, back_crop) {
     var mod = content.split("\n");
     var output = "<strong>" + file_name + "</strong>";
     var line_n_len = Math.floor(Math.log10(mod.length));
-    for (var i = frontCrop.value; i < mod.length - backCrop.value; i++) {
-        let line_number = i - frontCrop.value + 1;
+    for (var i = front_crop; i < mod.length - back_crop; i++) {
+        let line_number = i - front_crop + 1;
         output += "<br>" + "&nbsp;".repeat(line_n_len + 1 - line_number.toString().length) + line_number + "|    " + replace_leading_whitespaces_simple(replace_reserved(mod[i]));
     }
-    return output + "<br><br>"; //TODO: adjustable breaks between spaces.
+    return output + "<br><br>"; //TODO: adjustable breaks between files.
 }
 
 function replace_reserved(string) {
