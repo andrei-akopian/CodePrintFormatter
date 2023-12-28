@@ -68,3 +68,7 @@ body {
 p {
     margin: 0px;
 }
+
+a {
+    color: lightgreen;
+}
