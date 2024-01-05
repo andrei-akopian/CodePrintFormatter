@@ -98,11 +98,45 @@ function setTitle() {
 }
 
 function setDate() {
-    var date = prompt("Enter date for your document (leave blank for default/reset):");
-    if (date === "") {
-        date = Date(); //TODO: add more options to here
+    let date = new Date();
+    let formatted_date;
+    var user_input = prompt(`Enter a date for your document:
+    You can choose one of the following quick options (enter number or name) or enter your own cleartext*:
+        1. Full: ${date.toString()}
+        2. Date: ${date.toDateString()}
+        3. Local: ${date.toLocaleString()}
+        4. Local Date: ${date.toLocaleDateString()}
+        5. GMT: ${date.toGMTString()}
+        6. UTC: ${date.toUTCString()}
+        7. ISO: ${date.toISOString()}
+    * If any issues arrise with pure cleartext, put a ! infront: !Today`);
+    // logic to pic the right date format
+    // ? maybe add case insensitivity
+    let len = user_input.length;
+    let lenIs1 = len === 1;
+    let char0 = user_input[0];
+    if (len > 0) {
+        if (char0 === "!") {
+            formatted_date = user_input.slice(1);
+        } else if ((lenIs1 && char0 === "1") || user_input === "Full") {
+            formatted_date = date.toString();
+        } else if ((lenIs1 && char0 === "2") || user_input === "Date") {
+            formatted_date = date.toDateString();
+        } else if ((lenIs1 && char0 === "3") || user_input === "Local") {
+            formatted_date = date.toLocaleString();
+        } else if ((lenIs1 && char0 === "4") || user_input === "Local Date") {
+            formatted_date = date.toLocaleDateString();
+        } else if ((lenIs1 && char0 === "5") || user_input === "GMT") {
+            formatted_date = date.toGMTString();
+        } else if ((lenIs1 && char0 === "6") || user_input === "UTM") {
+            formatted_date = date.toUTCString();
+        } else if ((lenIs1 && char0 === "7") || user_input === "ISO") {
+            formatted_date = date.toISOString();
+        } else {
+            formatted_date = user_input;
+        }
+        datetime.innerHTML = formatted_date;
     }
-    datetime.innerHTML = date;
 }
 
 function removeFile(fileN) {
