@@ -21,11 +21,19 @@ class addedFile {
     show_sidebar() {
         this.file_sidebar_node.style.display = "block"
     }
+    refreshBreakAvoid() {
+        let state = this.file_div_node.classList.contains("break-avoid");
+        console.log(this.break_avoid.children[0].checked);
+        let goal = this.break_avoid.children[0].checked;
+        if (state != goal) {
+            this.file_div_node.classList.toggle("break-avoid");
+        }
+    }
     constructor(file, read_file, file_id) {
         this.file = file;
         this.file_id = file_id;
         this.file_name = file.name;
-        this.content = read_file.target.result; //TODO: create a better format for the content.
+        this.content = read_file.target.result; //TODO: create a better format for the content. (with newlines slipt etc)
         this.file_div_node;
         this.file_display_node;
         this.file_sidebar_node;
@@ -40,13 +48,15 @@ class addedFile {
         this.file_sidebar_node = generateFormatSidebarNode(this.file_id, this.file_name);
         this.file_div_node.appendChild(this.file_sidebar_node);
         // sidebar components
-        this.file_sidebar_node.appendChild(generateRefreshButton(this)); //FIXME: onclick doesn't work
+        this.file_sidebar_node.appendChild(generateRefreshButton(this));
         this.front_crop = generateCropInputField("front-crop-" + this.file_id, 0, 200, 0); //TODO: add input validation
         this.back_crop = generateCropInputField("back-crop-" + this.file_id, 0, 200, 0);
+        this.break_avoid = generateBreakeInsideAvoidCheckbox();
         this.file_sidebar_node.appendChild(generatePharagraph("Front Crop:"));
         this.file_sidebar_node.appendChild(this.front_crop);
         this.file_sidebar_node.appendChild(generatePharagraph("Back Crop:"));
         this.file_sidebar_node.appendChild(this.back_crop);
+        this.file_sidebar_node.appendChild(this.break_avoid);
         // display text
         this.reender();
         fileID += 1;
@@ -79,6 +89,7 @@ function printFileOutput() {
     settings.style.display = "none";
     for (added_file of added_files) {
         added_file.hide_sidebar();
+        added_file.refreshBreakAvoid();
     }
     print();
     for (added_file of added_files) {
@@ -104,7 +115,7 @@ function setDate() {
     You can choose one of the following quick options (enter number or name) or enter your own cleartext*:
         1. Full: ${date.toString()}
         2. Date: ${date.toDateString()}
-        3. Local: ${date.toLocaleString()}
+        3. Local: ${date.toLocaleString()} <- recommended
         4. Local Date: ${date.toLocaleDateString()}
         5. GMT: ${date.toGMTString()}
         6. UTC: ${date.toUTCString()}

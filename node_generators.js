@@ -43,6 +43,16 @@ function generateRefreshButton(parent) {
     return refresh_button;
 }
 
+function generateBreakeInsideAvoidCheckbox() {
+    let break_checkbox_container = document.createElement("div");
+    let break_checkbox = document.createElement("input");
+    break_checkbox.type = "checkbox";
+    break_checkbox.checked = false;
+    break_checkbox_container.appendChild(break_checkbox);
+    break_checkbox_container.appendChild(document.createTextNode("No split"));
+    return break_checkbox_container;
+}
+
 function generatePharagraph(text) {
     let p = document.createElement("p");
     p.innerHTML = text;

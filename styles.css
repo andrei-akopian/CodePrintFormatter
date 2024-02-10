@@ -29,6 +29,10 @@ body {
     display: flex;
 }
 
+.break-avoid {
+    break-inside: avoid;
+}
+
 .file-display {
     margin-left: 10px;
     margin-right: 10px;
