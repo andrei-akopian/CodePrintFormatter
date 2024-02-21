@@ -1,5 +1,5 @@
 let fileID = 0;
-
+// TODO: add drag and drop for file input
 const Title = document.getElementById("page-title");
 const Author = document.getElementById("author");
 const datetime = document.getElementById("datetime");
@@ -14,16 +14,10 @@ added_files = []
 class addedFile {
     reender() {
         this.file_display_node.innerHTML = formatfile(this.file_name, this.content, this.front_crop.value, this.back_crop.value);
-    }
-    hide_sidebar() {
-        this.file_sidebar_node.style.display = "none"
-    }
-    show_sidebar() {
-        this.file_sidebar_node.style.display = "block"
+        this.refreshBreakAvoid();
     }
     refreshBreakAvoid() {
         let state = this.file_div_node.classList.contains("break-avoid");
-        console.log(this.break_avoid.children[0].checked);
         let goal = this.break_avoid.children[0].checked;
         if (state != goal) {
             this.file_div_node.classList.toggle("break-avoid");
@@ -33,7 +27,7 @@ class addedFile {
         this.file = file;
         this.file_id = file_id;
         this.file_name = file.name;
-        this.content = read_file.target.result; //TODO: create a better format for the content. (with newlines slipt etc)
+        this.content = read_file.target.result.split("\n"); // list split at newlines
         this.file_div_node;
         this.file_display_node;
         this.file_sidebar_node;
@@ -85,17 +79,22 @@ function processFile(file) {
     }
 }
 
+// * printing
 function printFileOutput() {
-    settings.style.display = "none";
-    for (added_file of added_files) {
-        added_file.hide_sidebar();
-        added_file.refreshBreakAvoid();
-    }
+    refreshAll();
     print();
+}
+
+addEventListener("beforeprint", (event) => {
+    refreshAll();
+});
+
+// * settings
+
+function refreshAll() {
     for (added_file of added_files) {
-        added_file.show_sidebar();
+        added_file.reender();
     }
-    settings.style.display = "block";
 }
 
 function setAuthor() {
@@ -159,12 +158,11 @@ function removeFile(fileN) {
 
 // text formatting function
 function formatfile(file_name, content, front_crop, back_crop) {
-    var mod = content.split("\n");
     var output = "<strong>" + file_name + "</strong>";
-    var line_n_len = Math.floor(Math.log10(mod.length));
-    for (var i = front_crop; i < mod.length - back_crop; i++) {
+    var line_n_len = Math.floor(Math.log10(content.length));
+    for (var i = front_crop; i < content.length - back_crop; i++) {
         let line_number = i - front_crop + 1;
-        output += "<br>" + "&nbsp;".repeat(line_n_len + 1 - line_number.toString().length) + line_number + "|    " + replace_leading_whitespaces_simple(replace_reserved(mod[i]));
+        output += "<br>" + "&nbsp;".repeat(line_n_len + 1 - line_number.toString().length) + line_number + "|    " + replace_leading_whitespaces_simple(replace_reserved(content[i]));
     }
     return output + "<br><br>"; //TODO: adjustable breaks between files.
 }
